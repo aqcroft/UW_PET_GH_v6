@@ -1,0 +1,516 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<title>What could five conversations earn you? · Adrian Croft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --purple:#7c3aed;--pink:#db2777;
+  --grad:linear-gradient(135deg,#7c3aed,#db2777);
+  --bg:#f4f2f7;--bg2:#edeaf3;--surface:#fff;
+  --border:rgba(124,58,237,0.12);--border2:rgba(124,58,237,0.22);
+  --text:#0f0d1a;--text2:#1e1b35;--text3:#4a4370;
+  --green:#16a34a;--blue:#2563eb;
+  --font-display:'Fraunces',serif;--font-body:'Nunito',sans-serif;
+  --radius:1rem;
+  --shadow:0 2px 16px rgba(124,58,237,0.1);
+  --shadow-md:0 4px 24px rgba(124,58,237,0.15);
+  --shadow-lg:0 8px 40px rgba(124,58,237,0.2);
+}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:19px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(124,58,237,0.04) 1px,transparent 1px);background-size:24px 24px;pointer-events:none;z-index:0;}
+.blob{position:fixed;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0;animation:blob-float 14s ease-in-out infinite alternate;}
+.blob-1{width:340px;height:340px;background:rgba(219,39,119,0.05);top:-90px;right:-80px;}
+.blob-2{width:280px;height:280px;background:rgba(124,58,237,0.06);bottom:8%;left:-100px;animation-delay:-6s;}
+@keyframes blob-float{from{transform:translate(0,0) scale(1);}to{transform:translate(14px,22px) scale(1.05);}}
+
+#snap-root{position:fixed;inset:0;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;z-index:1;max-width:480px;margin:0 auto;-ms-overflow-style:none;scrollbar-width:none;}
+#snap-root::-webkit-scrollbar{display:none;}
+.chapter{scroll-snap-align:start;scroll-snap-stop:always;height:100dvh;position:relative;display:flex;flex-direction:column;overflow:hidden;}
+.chapter-inner{flex:1;overflow-y:auto;padding:0.75rem 1.25rem 1.1rem;-ms-overflow-style:none;scrollbar-width:none;}
+.chapter-inner::-webkit-scrollbar{display:none;}
+.chap-bar{display:flex;align-items:center;justify-content:space-between;padding:0.7rem 1.25rem 0;flex-shrink:0;}
+
+.display{font-family:var(--font-display);line-height:1.1;letter-spacing:-0.01em;}
+.d-xl{font-size:clamp(2.4rem,10.5vw,3.2rem);font-weight:700;}
+.d-lg{font-size:clamp(1.85rem,7.5vw,2.4rem);font-weight:600;}
+.d-md{font-size:clamp(1.35rem,5.5vw,1.75rem);font-weight:600;}
+.eyebrow{font-size:0.82rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);font-family:var(--font-body);}
+.grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;position:relative;box-shadow:var(--shadow);}
+.card-tinted{background:linear-gradient(135deg,rgba(124,58,237,0.06),rgba(219,39,119,0.04));border-color:var(--border2);}
+.pill{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.85rem;font-weight:700;padding:0.26rem 0.65rem;border-radius:999px;background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.2);color:var(--purple);}
+
+.nav-dots{position:fixed;right:0.8rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:0.45rem;z-index:90;}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:rgba(124,58,237,0.18);transition:all 0.3s;cursor:pointer;}
+.nav-dot.active{background:var(--purple);transform:scale(1.5);}
+.nav-dot.done{background:rgba(124,58,237,0.4);}
+
+/* ── Earnings hero number ── */
+.earnings-hero{font-family:var(--font-display);font-weight:700;font-size:clamp(2.7rem,12vw,4rem);line-height:1;letter-spacing:-0.02em;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+@keyframes num-spring{0%{transform:scale(1);}40%{transform:scale(1.1);}70%{transform:scale(0.97);}100%{transform:scale(1);}}
+.num-pop{animation:num-spring 0.45s cubic-bezier(0.34,1.56,0.64,1);}
+.prog-track{height:5px;border-radius:999px;background:var(--bg2);overflow:hidden;margin:0.4rem 0 0.25rem;}
+.prog-fill{height:100%;border-radius:999px;background:var(--grad);transition:width 0.5s cubic-bezier(0.4,0,0.2,1);}
+
+/* ── Stamp grid (the signature) ── */
+.stamp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;margin:0.7rem 0 0.55rem;}
+.stamp{aspect-ratio:1;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.05rem;position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:transform 0.12s;min-width:44px;min-height:44px;}
+.stamp:active{transform:scale(0.92);}
+.stamp-empty{border:2px dashed rgba(124,58,237,0.28);background:rgba(124,58,237,0.03);color:var(--text3);}
+.stamp-you{background:linear-gradient(135deg,rgba(219,39,119,0.16),rgba(219,39,119,0.07));border:2.5px solid rgba(219,39,119,0.55);cursor:default;transform:rotate(-6deg);}
+.stamp-you:active{transform:rotate(-6deg);}
+.stamp-filled{background:linear-gradient(135deg,rgba(124,58,237,0.16),rgba(124,58,237,0.07));border:2.5px solid rgba(124,58,237,0.5);animation:stamp-in 0.4s cubic-bezier(0.34,1.56,0.64,1);}
+.stamp-partner{border-color:rgba(219,39,119,0.65);box-shadow:0 0 0 3px rgba(219,39,119,0.18),0 0 14px rgba(219,39,119,0.2);}
+@keyframes stamp-in{0%{transform:scale(0.6) rotate(-14deg);opacity:0;}60%{transform:scale(1.1) rotate(3deg);}100%{transform:scale(1) rotate(0deg);opacity:1;}}
+@keyframes pulse-ring{0%,100%{box-shadow:0 0 0 0 rgba(219,39,119,0);}50%{box-shadow:0 0 0 6px rgba(219,39,119,0.18);}}
+.stamp-pulse{animation:pulse-ring 1.5s ease-in-out infinite;}
+.stamp-tick{position:absolute;bottom:-3px;right:-3px;width:1.35rem;height:1.35rem;border-radius:50%;background:var(--green);color:#fff;font-size:0.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg);}
+
+/* ── Coach / prompt strip ── */
+.coach{font-size:0.97rem;color:var(--text);line-height:1.55;padding:0.6rem 0.85rem;border-radius:0.7rem;border-left:4px solid var(--purple);background:rgba(124,58,237,0.09);text-align:center;transition:all 0.3s;}
+.coach-partner{border-left-color:var(--pink);background:rgba(219,39,119,0.08);}
+.toast{position:fixed;left:50%;bottom:5.2rem;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border2);border-radius:999px;padding:0.5rem 1rem;font-size:0.92rem;font-weight:700;color:var(--purple);box-shadow:var(--shadow-lg);z-index:120;white-space:nowrap;animation:toast-in 0.35s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes toast-in{from{opacity:0;transform:translateX(-50%) translateY(12px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+@keyframes fade-up{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.reveal{animation:fade-up 0.55s ease both;}
+
+/* ── Buttons ── */
+.btn-primary{display:flex;align-items:center;justify-content:space-between;gap:0.7rem;width:100%;padding:0.95rem 1.05rem;background:var(--grad);color:#fff;border:none;border-radius:var(--radius);cursor:pointer;font-family:var(--font-body);font-size:0.97rem;font-weight:700;box-shadow:0 6px 20px rgba(124,58,237,0.3);text-decoration:none;transition:transform 0.15s;-webkit-tap-highlight-color:transparent;min-height:44px;}
+.btn-primary:active{transform:scale(0.98);}
+.btn-secondary{display:flex;align-items:center;justify-content:space-between;gap:0.7rem;width:100%;padding:0.85rem 1.05rem;background:var(--surface);color:var(--text);border:1.5px solid var(--border2);border-radius:var(--radius);cursor:pointer;font-family:var(--font-body);font-size:0.95rem;font-weight:600;text-decoration:none;box-shadow:var(--shadow);-webkit-tap-highlight-color:transparent;min-height:44px;}
+.btn-ghost{display:flex;align-items:center;justify-content:space-between;gap:0.7rem;width:100%;padding:0.8rem 1.05rem;background:transparent;color:var(--text2);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-family:var(--font-body);font-size:0.9rem;font-weight:600;text-decoration:none;-webkit-tap-highlight-color:transparent;min-height:44px;}
+.btn-next{display:flex;align-items:center;justify-content:center;gap:0.45rem;width:100%;padding:0.95rem 1.05rem;background:var(--grad);color:#fff;border:none;border-radius:var(--radius);cursor:pointer;font-family:var(--font-body);font-size:0.97rem;font-weight:700;box-shadow:0 6px 20px rgba(124,58,237,0.3);transition:transform 0.15s;-webkit-tap-highlight-color:transparent;min-height:44px;}
+.btn-next:active{transform:scale(0.98);}
+
+/* ── Breakdown rows ── */
+.bd-row{display:flex;align-items:center;justify-content:space-between;padding:0.6rem 0.75rem;border-radius:0.6rem;background:var(--bg2);margin-bottom:0.35rem;font-size:0.95rem;}
+.bd-row.dim{opacity:0.45;}
+.bd-total{background:var(--grad);color:#fff;font-weight:800;}
+.stream-row{display:flex;align-items:center;gap:0.55rem;padding:0.6rem 0.7rem;border-radius:0.65rem;background:var(--surface);border:1px solid var(--border);margin-bottom:0.35rem;}
+.divider{height:1px;background:var(--border);margin:0.85rem 0;}
+
+.locked-ch{align-items:center;justify-content:center;padding:2rem 1.5rem;text-align:center;opacity:0.55;}
+.celeb-num{display:inline-block;animation:num-spring 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.15s both;}
+
+/* ── Confetti (from v5) ── */
+.cf{position:fixed;pointer-events:none;z-index:250;animation:cf-fall var(--d,2s) var(--dl,0s) ease-in forwards;}
+@keyframes cf-fall{0%{opacity:1;transform:translateY(var(--sy,-20px)) rotate(0deg);}100%{opacity:0;transform:translateY(100vh) translateX(var(--dx,0px)) rotate(var(--r,720deg));}}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useRef,useMemo}=React;
+
+/* ════════════════════════════════════════════════════════════════════════
+   UW_PET_v6 — prospect-facing earnings tool
+   Layer 1 = customer gathering · Layer 2 = one partner duplicating
+   Layer 3 (team income) intentionally out of scope: to add it later,
+   append a chapter component to the CHAPTERS flow in App and a nav dot.
+   ════════════════════════════════════════════════════════════════════════ */
+
+const CONTACT={
+  displayName:'Adrian',fullName:'Adrian Croft',title:'UW Authorised Partner',
+  photoUrl:'https://raw.githubusercontent.com/aqcroft/UW_PET_GH_v2/main/Adrian_Croft.jpg',
+  whatsappNumber:'447787400800',
+  whatsappMsg:"Hi Adrian, I've just used your earnings tool and I'd like to know more",
+  calendarUrl:'https://tidycal.com/aqcroft/uwcost',
+  registerUrl:'https://uw.partners/adrian.croft/partner/join',
+  savingsUrl:'https://uw.partners/adrian.croft/join',
+};
+const waUrl=()=>`https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent(CONTACT.whatsappMsg)}`;
+
+/* ── Carried forward from v5, verbatim ─────────────────────────────────── */
+function cbAmount(svcs){return[0,50,100,250,300][svcs]||0;}
+function tenantRate(svcs){if(svcs<=1)return 1.40;if(svcs===2)return 2.50;if(svcs===3)return 3.10;return 3.75;}
+
+function calcAll(slots,includeYou){
+  const prospects=includeYou?slots.slice(1):slots;
+  const totalCB=prospects.reduce((s,c)=>s+(c.type==='home'?cbAmount(c.svcs):0),0);
+  const habQ=prospects.filter(c=>c.type==='home'&&c.svcs>=3).length;
+  const habRate=habQ>=4?100:habQ>=2?50:0;
+  const totalHAB=habRate*habQ;
+  const customerCount=includeYou?1+slots.slice(1).filter(c=>c.type!==null).length:slots.filter(c=>c.type!==null).length;
+  const qualifyQD=customerCount>=3;
+  const tenants=prospects.filter(c=>c.type==='rent');
+  const monthlyRaw=qualifyQD?tenants.reduce((s,c)=>s+tenantRate(c.svcs),0):0;
+  const monthlyResidual=Math.round(monthlyRaw*10)/10;
+  const annualResidual=Math.round(monthlyResidual*12);
+  const allFilled=includeYou?slots.slice(1).every(c=>c.type!==null):slots.every(c=>c.type!==null);
+  const hasPartner=prospects.some(c=>c.isPartner);
+  const fastStarter=allFilled&&hasPartner?500:0;
+  const total=totalCB+totalHAB+fastStarter+monthlyResidual;
+  const totalSvcs=prospects.reduce((s,c2)=>s+(c2.type!==null?c2.svcs:0),0);
+  const introducedCount=includeYou?customerCount-1:customerCount;
+  return{totalCB,totalHAB,habRate,habQ,fastStarter,monthlyResidual,annualResidual,qualifyQD,customerCount,introducedCount,allFilled,hasPartner,tenantCount:tenants.length,total,totalSvcs};
+}
+
+function boom(){
+  const cols=['#7c3aed','#db2777','#fbbf24','#22c55e','#f97316','#c4b5fd','#fbcfe8'];
+  for(let i=0;i<70;i++){
+    const el=document.createElement('div');el.className='cf';
+    el.style.cssText=`left:${10+Math.random()*80}vw;top:-10px;width:${5+Math.random()*5}px;height:${5+Math.random()*5}px;background:${cols[i%cols.length]};border-radius:${Math.random()>0.5?'50%':'2px'};--d:${1.4+Math.random()*1.4}s;--dl:${Math.random()*0.5}s;--sy:-15px;--dx:${(Math.random()-0.5)*140}px;--r:${Math.random()>0.5?720:-540}deg;`;
+    document.body.appendChild(el);setTimeout(()=>el.remove(),(2.3+Math.random())*1000);
+  }
+}
+
+/* ── v6: default scenario — every introduced customer is a 3-service homeowner ── */
+const FILLED={type:'home',svcs:3,isPartner:false};
+const freshSlots=()=>[
+  {type:null,svcs:0,isPartner:false}, // YOU — counted by calcAll regardless, stamped in the UI
+  {type:null,svcs:0,isPartner:false},{type:null,svcs:0,isPartner:false},
+  {type:null,svcs:0,isPartner:false},{type:null,svcs:0,isPartner:false},
+  {type:null,svcs:0,isPartner:false},
+];
+const ORDINALS=['You','2nd','3rd','4th','5th','6th'];
+
+/* ── CH0: HOOK ─────────────────────────────────────────────────────────── */
+function ChHero({onBegin}){
+  const [in_,setIn]=useState(false);
+  useEffect(()=>{const t=setTimeout(()=>setIn(true),80);return()=>clearTimeout(t);},[]);
+  const tr=(d)=>({opacity:in_?1:0,transform:in_?'translateY(0)':'translateY(18px)',transition:`all 0.6s ease ${d}s`});
+  return(
+    <div className="chapter" style={{padding:'1.25rem',justifyContent:'space-between'}}>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <span className="pill">✦ Partner earnings</span>
+        <div style={{display:'flex',alignItems:'center',gap:'0.5rem'}}>
+          <img src={CONTACT.photoUrl} alt={CONTACT.fullName} style={{width:'2rem',height:'2rem',borderRadius:'50%',objectFit:'cover',border:'1.5px solid rgba(124,58,237,0.3)'}} onError={e=>e.currentTarget.style.display='none'}/>
+          <span style={{fontSize:'0.92rem',color:'var(--text2)',fontWeight:'600'}}>{CONTACT.displayName}</span>
+        </div>
+      </div>
+      <div style={{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',gap:'1.1rem'}}>
+        <div style={tr(0.1)}>
+          <p className="eyebrow" style={{marginBottom:'0.5rem',color:'rgba(124,58,237,0.7)'}}>Five conversations · thirty days</p>
+          <h1 className="display d-xl">What could<br/>five conversations<br/><span className="grad-text">earn you?</span></h1>
+        </div>
+        <p style={{...tr(0.3),color:'var(--text2)',fontSize:'1rem',lineHeight:1.7,maxWidth:'30ch'}}>No selling. No cold calls. Just helping five people you know spend less on bills they already pay.</p>
+        <div style={tr(0.5)}>
+          <button className="btn-next" onClick={onBegin}>Show me ✦</button>
+          <p style={{textAlign:'center',fontSize:'0.82rem',color:'var(--text3)',marginTop:'0.5rem'}}>Takes a minute · Nothing to sign up to</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── CH1: THE BUILD ────────────────────────────────────────────────────── */
+function ChBuild({slots,setSlots,earnings,onReset,scrollToNext,scrollToCTA}){
+  const [popKey,setPop]=useState(0);
+  const [toast,setToast]=useState(null);
+  const [revealStage,setStage]=useState(0); // 0=building · 1+=complete reveals
+  const prevTotal=useRef(0);
+  const prevHabRate=useRef(0);
+  const celebDone=useRef(false);
+  const timers=useRef([]);
+
+  // Number spring on every change
+  useEffect(()=>{if(earnings.total!==prevTotal.current){setPop(k=>k+1);prevTotal.current=earnings.total;}},[earnings.total]);
+
+  // Unnamed bonus-landing moment when the silent bonus rate steps up
+  useEffect(()=>{
+    if(earnings.habRate>prevHabRate.current&&!earnings.hasPartner){
+      setToast('✨ A bonus just landed on top');
+      const t=setTimeout(()=>setToast(null),2200);timers.current.push(t);
+    }
+    prevHabRate.current=earnings.habRate;
+  },[earnings.habRate,earnings.hasPartner]);
+
+  // Fast Starter unlock → peak moment, then staged reveals
+  useEffect(()=>{
+    if(earnings.allFilled&&earnings.hasPartner&&!celebDone.current){
+      celebDone.current=true;
+      boom();setStage(1);
+      timers.current.push(setTimeout(()=>setStage(2),1500));
+      timers.current.push(setTimeout(()=>setStage(3),2800));
+    }
+    if(!earnings.hasPartner){celebDone.current=false;setStage(0);}
+  },[earnings.allFilled,earnings.hasPartner]);
+
+  useEffect(()=>()=>timers.current.forEach(clearTimeout),[]);
+
+  function tapSlot(i){
+    if(i===0)return; // YOU is already stamped
+    const s=slots[i];
+    if(s.type===null){
+      // Gathering: stamp this conversation
+      setSlots(prev=>{const n=[...prev];n[i]={...FILLED};return n;});
+    }else if(earnings.allFilled&&!earnings.hasPartner){
+      // Upgrade phase: this customer becomes the partner
+      setSlots(prev=>{const n=[...prev];n[i]={...n[i],isPartner:true};return n;});
+    }
+  }
+
+  const filled=earnings.introducedCount;
+  const stamped=1+filled; // YOU counts — illusion of progress
+  const pct=Math.min(100,(earnings.total/2250)*100);
+  const complete=earnings.allFilled&&earnings.hasPartner;
+
+  const coach=(()=>{
+    if(complete)return null;
+    if(earnings.allFilled)return{cls:'coach coach-partner',msg:<span>One last move. You're <strong>£500 away</strong> from your Fast Starter Bonus — it unlocks when one of your five joins you. <strong>Tap them.</strong> 💎</span>};
+    if(filled===0)return{cls:'coach',msg:<span>Good news — <strong>you're already on the board</strong>. As a customer yourself, you count as number one. Tap a slot to start conversation one.</span>};
+    const left=5-filled;
+    return{cls:'coach',msg:<span>{filled} down, {left} to go. Each tap is one conversation with someone you already know.</span>};
+  })();
+
+  return(
+    <div className="chapter">
+      <div className="chap-bar">
+        <span className="eyebrow">Your first 30 days</span>
+        <span style={{fontSize:'0.85rem',fontWeight:'700',color:'var(--text3)'}}>{stamped} of 6</span>
+      </div>
+      <div className="chapter-inner">
+
+        <div className="card card-tinted" style={{padding:'0.85rem 0.95rem',textAlign:'center'}}>
+          <div key={popKey} className="earnings-hero num-pop">£{Math.ceil(earnings.total).toLocaleString()}</div>
+          <div className="prog-track"><div className="prog-fill" style={{width:`${pct}%`}}/></div>
+          <p style={{fontSize:'0.82rem',color:'var(--text3)'}}>
+            {complete?'Your first 30 days, complete':filled===0?'Already started — that\u2019s you below':'Building…'}
+          </p>
+        </div>
+
+        <div className="stamp-grid">
+          {slots.map((s,i)=>{
+            const isYou=i===0;
+            const cls=isYou?'stamp stamp-you'
+              :s.type===null?'stamp stamp-empty'
+              :`stamp stamp-filled${s.isPartner?' stamp-partner':''}${earnings.allFilled&&!earnings.hasPartner?' stamp-pulse':''}`;
+            return(
+              <div key={i} className={cls} onClick={()=>tapSlot(i)} role="button" aria-label={isYou?'You — already counted':s.type===null?`Add your ${ORDINALS[i]} customer`:`${ORDINALS[i]} customer${s.isPartner?' — your partner':''}`}>
+                {isYou?(
+                  <>
+                    <span style={{fontSize:'1.3rem'}}>🙋</span>
+                    <span style={{fontSize:'0.72rem',fontWeight:'800',color:'rgba(219,39,119,0.75)',letterSpacing:'0.06em'}}>YOU</span>
+                    <span className="stamp-tick">✓</span>
+                  </>
+                ):s.type===null?(
+                  <>
+                    <span style={{fontSize:'1.2rem',opacity:0.35}}>+</span>
+                    <span style={{fontSize:'0.75rem',fontWeight:'700'}}>{ORDINALS[i]}</span>
+                  </>
+                ):(
+                  <>
+                    <span style={{fontSize:'1.3rem'}}>{s.isPartner?'💎':'🏠'}</span>
+                    <span style={{fontSize:'0.75rem',fontWeight:'700',color:s.isPartner?'var(--pink)':'var(--purple)'}}>{ORDINALS[i]}</span>
+                    <span className="stamp-tick">✓</span>
+                  </>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {coach&&<div className={coach.cls}>{coach.msg}</div>}
+
+        {complete&&(
+          <div style={{textAlign:'center'}}>
+            <div className="reveal" style={{padding:'0.4rem 0 0.2rem'}}>
+              <p style={{fontFamily:'var(--font-display)',fontSize:'1.25rem',fontWeight:'600',lineHeight:1.4}}>
+                Five conversations.<br/>One of them joins you.<br/><span className="grad-text" style={{fontWeight:'700'}}>£{Math.ceil(earnings.total).toLocaleString()} in 30 days.</span>
+              </p>
+            </div>
+            {revealStage>=2&&(
+              <p className="reveal" style={{fontSize:'0.92rem',color:'var(--text3)',fontStyle:'italic',marginTop:'0.45rem'}}>
+                And that's before the monthly income starts to build.
+              </p>
+            )}
+            {revealStage>=3&&(
+              <div className="reveal" style={{marginTop:'0.75rem',display:'flex',flexDirection:'column',gap:'0.45rem'}}>
+                <button className="btn-next" onClick={scrollToCTA}>I'm in — what's next? ↓</button>
+                <button onClick={scrollToNext} style={{background:'none',border:'none',fontSize:'0.88rem',color:'var(--text3)',cursor:'pointer',padding:'0.45rem',fontFamily:'var(--font-body)',fontWeight:'600',minHeight:'44px'}}>Curious what happens when one of them does this too? ↓</button>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div style={{textAlign:'center',marginTop:'0.6rem'}}>
+          <button onClick={onReset} style={{background:'none',border:'none',fontSize:'0.8rem',color:'var(--text3)',cursor:'pointer',padding:'0.4rem',fontFamily:'var(--font-body)',opacity:0.7}}>↺ Start again</button>
+        </div>
+        <div style={{height:'0.5rem'}}/>
+      </div>
+      {toast&&<div className="toast">{toast}</div>}
+    </div>
+  );
+}
+
+/* ── CH2: LAYER 2 — one of them does the same (opt-in) ─────────────────── */
+function ChLayer2({earnings,scrollToNext}){
+  const supportingBonus=Math.round(earnings.totalCB*0.5); // 50% of their CB — £625 on the default scenario
+  const mentorBonus=400;
+  const layer2Total=supportingBonus+mentorBonus;
+  const combined=Math.ceil(earnings.total)+layer2Total;
+  return(
+    <div className="chapter">
+      <div className="chap-bar"><span className="eyebrow">Zoom out</span></div>
+      <div className="chapter-inner">
+        <h2 className="display d-md" style={{marginBottom:'0.4rem',lineHeight:1.18}}>Now imagine<br/><span className="grad-text">one of them</span><br/>doing the same.</h2>
+        <p style={{color:'var(--text2)',fontSize:'0.95rem',lineHeight:1.65,marginBottom:'0.7rem'}}>Your new partner has their own five conversations. While you help them find their feet, you're paid for the support:</p>
+
+        <div className="card card-tinted" style={{marginBottom:'0.6rem'}}>
+          <p className="eyebrow" style={{fontSize:'0.78rem',marginBottom:'0.3rem'}}>From their first 30 days</p>
+          <div className="display d-lg grad-text" style={{marginBottom:'0.55rem'}}>+£{layer2Total.toLocaleString()}</div>
+          <div className="stream-row">
+            <span style={{fontSize:'1.1rem'}}>🤝</span>
+            <div style={{flex:1}}>
+              <p style={{fontSize:'0.9rem',fontWeight:'700'}}>Supporting bonus</p>
+              <p style={{fontSize:'0.82rem',color:'var(--text3)',lineHeight:1.4}}>Half of their customer bonuses, paid to you</p>
+            </div>
+            <span style={{fontWeight:'700',color:'var(--purple)'}}>£{supportingBonus}</span>
+          </div>
+          <div className="stream-row" style={{marginBottom:0}}>
+            <span style={{fontSize:'1.1rem'}}>🎓</span>
+            <div style={{flex:1}}>
+              <p style={{fontSize:'0.9rem',fontWeight:'700'}}>Mentor bonus</p>
+              <p style={{fontSize:'0.82rem',color:'var(--text3)',lineHeight:1.4}}>When they fast-start in their first 30 days, like you just did</p>
+            </div>
+            <span style={{fontWeight:'700',color:'var(--green)'}}>£{mentorBonus}</span>
+          </div>
+        </div>
+
+        <div className="card" style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'0.7rem'}}>
+          <div>
+            <p style={{fontSize:'0.88rem',fontWeight:'700'}}>Your picture so far</p>
+            <p style={{fontSize:'0.8rem',color:'var(--text3)'}}>Yours + theirs, helped along</p>
+          </div>
+          <span className="display d-md grad-text">£{combined.toLocaleString()}</span>
+        </div>
+
+        <p style={{fontSize:'0.88rem',color:'var(--text3)',fontStyle:'italic',lineHeight:1.6,marginBottom:'0.8rem'}}>There's a third layer — long-term team income — but that's a conversation, not a calculator.</p>
+
+        <button className="btn-next" onClick={scrollToNext}>What happens next? ↓</button>
+        <div style={{height:'0.5rem'}}/>
+      </div>
+    </div>
+  );
+}
+
+function ChLocked({label,hint}){
+  return(
+    <div className="chapter locked-ch">
+      <div style={{fontSize:'1.8rem',marginBottom:'0.6rem'}}>🔒</div>
+      <p style={{fontFamily:'var(--font-display)',fontWeight:'700',fontSize:'1.35rem',marginBottom:'0.7rem'}}>{label}</p>
+      <p style={{fontSize:'0.95rem',color:'var(--text3)',lineHeight:1.7,maxWidth:'24ch',margin:'0 auto'}}>{hint}</p>
+    </div>
+  );
+}
+
+/* ── CH3: CTA — warm, three paths ──────────────────────────────────────── */
+function ChCTA({earnings}){
+  const [showBreakdown,setShowBreakdown]=useState(false);
+  const headline=earnings.total>0?Math.ceil(earnings.total):2250;
+  const rows=[
+    {label:'Customer bonuses',val:earnings.totalCB},
+    {label:'Activity bonus',val:earnings.totalHAB},
+    {label:'Fast starter bonus',val:earnings.fastStarter},
+  ];
+  return(
+    <div className="chapter">
+      <div className="chap-bar"><span className="eyebrow" style={{color:'rgba(124,58,237,0.7)'}}>Ready when you are</span></div>
+      <div className="chapter-inner">
+        <h2 className="display d-lg" style={{marginBottom:'0.35rem',lineHeight:1.12}}>What would<br/><span className="grad-text">£{headline.toLocaleString()}</span><br/>mean to you?</h2>
+        <p style={{color:'var(--text2)',fontSize:'0.97rem',lineHeight:1.65,marginBottom:'1rem'}}>The next step is yours — at whatever pace feels right.</p>
+
+        <div style={{display:'flex',flexDirection:'column',gap:'0.5rem',marginBottom:'0.9rem'}}>
+          <a href={CONTACT.registerUrl} target="_blank" rel="noopener noreferrer" className="btn-primary">
+            <div><div style={{fontSize:'0.8rem',opacity:0.75,fontWeight:'400'}}>I'm ready to go</div><div>Register now</div></div>
+            <span style={{fontSize:'1.3rem'}}>🚀</span>
+          </a>
+          <a href={waUrl()} target="_blank" rel="noopener noreferrer" className="btn-secondary">
+            <div><div style={{fontSize:'0.8rem',color:'var(--text3)',fontWeight:'400'}}>Questions first?</div><div>Chat with {CONTACT.displayName}</div></div>
+            <span style={{fontSize:'1.2rem'}}>💬</span>
+          </a>
+          <button onClick={()=>setShowBreakdown(v=>!v)} className="btn-ghost">
+            <div><div style={{fontSize:'0.8rem',color:'var(--text3)',fontWeight:'400'}}>Curious about the numbers?</div><div>Where the £{headline.toLocaleString()} comes from</div></div>
+            <span style={{fontSize:'1rem',transition:'transform 0.3s',transform:showBreakdown?'rotate(180deg)':'none'}}>▾</span>
+          </button>
+        </div>
+
+        {showBreakdown&&(
+          <div className="reveal" style={{marginBottom:'0.9rem'}}>
+            {rows.map(r=>(
+              <div key={r.label} className={`bd-row${r.val>0?'':' dim'}`}>
+                <span>{r.label}</span><span style={{fontWeight:'700'}}>{r.val>0?`£${r.val.toLocaleString()}`:'—'}</span>
+              </div>
+            ))}
+            <div className="bd-row bd-total"><span>Total</span><span>£{Math.ceil(earnings.total).toLocaleString()}</span></div>
+          </div>
+        )}
+
+        <div className="divider"/>
+        <div style={{display:'flex',alignItems:'center',gap:'0.7rem',marginBottom:'0.8rem'}}>
+          <img src={CONTACT.photoUrl} alt={CONTACT.fullName} style={{width:'2.6rem',height:'2.6rem',borderRadius:'50%',objectFit:'cover',border:'1.5px solid var(--border2)',flexShrink:0}} onError={e=>e.currentTarget.style.display='none'}/>
+          <div style={{flex:1}}>
+            <p style={{fontWeight:'700',fontSize:'0.95rem'}}>{CONTACT.fullName}</p>
+            <p style={{fontSize:'0.82rem',color:'var(--text3)'}}>{CONTACT.title}</p>
+          </div>
+          <a href={CONTACT.calendarUrl} target="_blank" rel="noopener noreferrer" style={{fontSize:'0.85rem',fontWeight:'700',color:'var(--purple)',textDecoration:'none',padding:'0.5rem 0.7rem',border:'1px solid var(--border2)',borderRadius:'0.6rem',minHeight:'44px',display:'flex',alignItems:'center'}}>🗓️ Book a call</a>
+        </div>
+        <p style={{fontSize:'0.8rem',color:'var(--text3)',textAlign:'center',lineHeight:1.6}}>Illustrative figures based on UW Partner reward rules. Actual results depend on individual effort and circumstances.</p>
+        <div style={{height:'0.5rem'}}/>
+      </div>
+    </div>
+  );
+}
+
+/* ── APP ───────────────────────────────────────────────────────────────── */
+const CHAPTER_LABELS=['Start','Build','One more layer','Next steps'];
+
+function App(){
+  const [slots,setSlots]=useState(freshSlots());
+  const [layer2on,setLayer2on]=useState(false);
+  const [activeIdx,setActiveIdx]=useState(0);
+  const snapRef=useRef(null);
+
+  const earnings=useMemo(()=>calcAll(slots,true),[slots]);
+  useEffect(()=>{if(earnings.allFilled&&earnings.hasPartner)setLayer2on(true);},[earnings.allFilled,earnings.hasPartner]);
+
+  useEffect(()=>{
+    const el=snapRef.current;if(!el)return;
+    function onScroll(){setActiveIdx(Math.max(0,Math.min(Math.round(el.scrollTop/window.innerHeight),3)));}
+    el.addEventListener('scroll',onScroll,{passive:true});
+    return()=>el.removeEventListener('scroll',onScroll);
+  },[]);
+
+  function goTo(i){const el=snapRef.current;if(el)el.scrollTo({top:i*window.innerHeight,behavior:'smooth'});}
+  function reset(){setSlots(freshSlots());setLayer2on(false);}
+
+  return(
+    <>
+      <div className="blob blob-1"/><div className="blob blob-2"/>
+      <div className="nav-dots">
+        {CHAPTER_LABELS.map((label,i)=>(
+          <div key={i} className={`nav-dot${activeIdx===i?' active':''}${i<activeIdx?' done':''}`}
+            onClick={()=>{if(i!==2||layer2on)goTo(i);}} title={label}/>
+        ))}
+      </div>
+      <div id="snap-root" ref={snapRef}>
+        <ChHero onBegin={()=>goTo(1)}/>
+        <ChBuild slots={slots} setSlots={setSlots} earnings={earnings} onReset={reset} scrollToNext={()=>goTo(2)} scrollToCTA={()=>goTo(3)}/>
+        {layer2on
+          ?<ChLayer2 earnings={earnings} scrollToNext={()=>goTo(3)}/>
+          :<ChLocked label="There's more to see" hint="Fill all five slots above and tap one of your five to make them a partner — this page unlocks when you do."/>}
+        <ChCTA earnings={earnings}/>
+      </div>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
